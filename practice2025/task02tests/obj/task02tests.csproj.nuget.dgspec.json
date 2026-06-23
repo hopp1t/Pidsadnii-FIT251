@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02tests\\task02tests.csproj": {}
+    "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02tests\\task02tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02tests\\task02tests.csproj": {
+    "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02tests\\task02tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02tests\\task02tests.csproj",
+        "projectUniqueName": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02tests\\task02tests.csproj",
         "projectName": "task02tests",
-        "projectPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02tests\\task02tests.csproj",
+        "projectPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02tests\\task02tests.csproj",
         "packagesPath": "C:\\Users\\egore\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02tests\\obj\\",
+        "outputPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\egore\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02\\task02.csproj": {
-                "projectPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02\\task02.csproj"
+              "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02\\task02.csproj": {
+                "projectPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02\\task02.csproj"
               }
             }
           }
@@ -54,21 +54,13 @@
               "target": "Package",
               "version": "[17.12.0, )"
             },
-            "NUnit": {
+            "xunit": {
               "target": "Package",
-              "version": "[4.2.2, )"
+              "version": "[2.9.3, )"
             },
-            "NUnit.Analyzers": {
+            "xunit.runner.visualstudio": {
               "target": "Package",
-              "version": "[4.4.0, )"
-            },
-            "NUnit3TestAdapter": {
-              "target": "Package",
-              "version": "[4.6.0, )"
-            },
-            "coverlet.collector": {
-              "target": "Package",
-              "version": "[6.0.2, )"
+              "version": "[2.8.2, )"
             }
           },
           "imports": [
@@ -91,14 +83,14 @@
         }
       }
     },
-    "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02\\task02.csproj": {
+    "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02\\task02.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02\\task02.csproj",
+        "projectUniqueName": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02\\task02.csproj",
         "projectName": "task02",
-        "projectPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02\\task02.csproj",
+        "projectPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02\\task02.csproj",
         "packagesPath": "C:\\Users\\egore\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02\\obj\\",
+        "outputPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\egore\\AppData\\Roaming\\NuGet\\NuGet.Config",

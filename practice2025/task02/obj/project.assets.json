@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02\\task02.csproj",
+      "projectUniqueName": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02\\task02.csproj",
       "projectName": "task02",
-      "projectPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02\\task02.csproj",
+      "projectPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02\\task02.csproj",
       "packagesPath": "C:\\Users\\egore\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\task02\\obj\\",
+      "outputPath": "C:\\Users\\egore\\source\\repos\\practice\\Pidsadnii-FIT251\\practice2025\\task02\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\egore\\AppData\\Roaming\\NuGet\\NuGet.Config",

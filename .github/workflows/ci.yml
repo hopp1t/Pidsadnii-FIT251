@@ -1,0 +1,26 @@
+name: .NET CI
+
+on:
+  push:
+    branches: [ "task01" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore practice2025/practice2025.sln
+      
+    - name: Build
+      run: dotnet build practice2025/practice2025.sln --no-restore
+      
+    - name: Test
+      run: dotnet test practice2025/practice2025.sln --no-build --verbosity normal

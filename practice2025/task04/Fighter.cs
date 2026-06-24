@@ -15,12 +15,9 @@ public class Fighter : ISpaceship
 
     public void Fire() => _shots.Add($"Fighter fired with power {FirePower}");
 
-    /// <summary>Текущая позиция корабля (для тестов).</summary>
     public int Position => _position;
 
-    /// <summary>Текущий угол поворота (для тестов).</summary>
     public int Angle => _angle;
 
-    /// <summary>Количество произведённых выстрелов (для тестов).</summary>
     public int ShotsCount => _shots.Count;
 }

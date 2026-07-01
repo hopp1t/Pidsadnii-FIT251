@@ -1,5 +1,6 @@
-using FileSystemCommands;
+﻿using FileSystemCommands;
 using Xunit;
+
 namespace task08tests;
 
 public class FileSystemCommandsTests
@@ -13,7 +14,7 @@ public class FileSystemCommandsTests
         File.WriteAllText(Path.Combine(testDir, "test2.txt"), "World");
 
         var command = new DirectorySizeCommand(testDir);
-        command.Execute(); // Проверяем, что не возникает исключений
+        command.Execute();
 
         Directory.Delete(testDir, true);
     }
@@ -27,13 +28,13 @@ public class FileSystemCommandsTests
         File.WriteAllText(Path.Combine(testDir, "file2.log"), "Log");
 
         var command = new FindFilesCommand(testDir, "*.txt");
-        command.Execute(); // Должен найти 1 файл
+        command.Execute();
 
         Directory.Delete(testDir, true);
     }
 
     [Fact]
-    public void DirectorySizeCommand_EmptyDirectory_SizeIsZero()
+    public void DirectorySizeCommand_EmptyDirectory_ReturnsZero()
     {
         var testDir = Path.Combine(Path.GetTempPath(), "EmptyDir_" + Guid.NewGuid());
         Directory.CreateDirectory(testDir);
@@ -52,6 +53,12 @@ public class FileSystemCommandsTests
     }
 
     [Fact]
+    public void DirectorySizeCommand_NullPath_ThrowsException()
+    {
+        Assert.Throws<ArgumentNullException>(() => new DirectorySizeCommand(null!));
+    }
+
+    [Fact]
     public void FindFilesCommand_NoMatchingFiles_FindsNothing()
     {
         var testDir = Path.Combine(Path.GetTempPath(), "TestDir_" + Guid.NewGuid());
@@ -59,7 +66,7 @@ public class FileSystemCommandsTests
         File.WriteAllText(Path.Combine(testDir, "file1.txt"), "Text");
 
         var command = new FindFilesCommand(testDir, "*.xyz");
-        command.Execute(); // Должен найти 0 файлов
+        command.Execute();
 
         Directory.Delete(testDir, true);
     }
@@ -72,19 +79,14 @@ public class FileSystemCommandsTests
     }
 
     [Fact]
-    public void DirectorySizeCommand_EmptyPath_ThrowsException()
-    {
-        Assert.Throws<ArgumentException>(() => new DirectorySizeCommand(""));
-    }
-
-    [Fact]
-    public void FindFilesCommand_EmptyPattern_ThrowsException()
+    public void FindFilesCommand_NullPattern_ThrowsException()
     {
         var testDir = Path.Combine(Path.GetTempPath(), "TestDir_" + Guid.NewGuid());
         Directory.CreateDirectory(testDir);
 
-        Assert.Throws<ArgumentException>(() => new FindFilesCommand(testDir, ""));
+        Assert.Throws<ArgumentNullException>(() => new FindFilesCommand(testDir, null!));
 
         Directory.Delete(testDir, true);
     }
+    
 }

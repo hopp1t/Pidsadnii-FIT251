@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemCommands", "FileS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task09tests", "task09tests\task09tests.csproj", "{ED9E257C-C8C8-47D8-B129-53D6CEC406F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetalInfoApp", "MetalInfoApp\MetalInfoApp.csproj", "{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{ED9E257C-C8C8-47D8-B129-53D6CEC406F0}.Release|x64.Build.0 = Release|Any CPU
 		{ED9E257C-C8C8-47D8-B129-53D6CEC406F0}.Release|x86.ActiveCfg = Release|Any CPU
 		{ED9E257C-C8C8-47D8-B129-53D6CEC406F0}.Release|x86.Build.0 = Release|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Debug|x64.Build.0 = Debug|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Debug|x86.Build.0 = Debug|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Release|x64.ActiveCfg = Release|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Release|x64.Build.0 = Release|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Release|x86.ActiveCfg = Release|Any CPU
+		{0E77C03D-B8F8-4126-827C-7CF824DCFA6B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

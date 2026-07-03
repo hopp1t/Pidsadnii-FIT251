@@ -7,7 +7,7 @@ namespace task10tests;
 public class PluginManagerTests
 {
     [Fact]
-    public void LoadPluginsFromDirectory_ShouldFindDlls()
+    public void LoadPluginsFromDirectory_ShouldLoadOnlyPluginsWithAttribute()
     {
         // Arrange
         var manager = new PluginManager();
@@ -18,6 +18,7 @@ public class PluginManagerTests
         manager.LoadPluginsFromDirectory(directoryPath);
 
         // Assert
-        Assert.NotEmpty(manager.LoadedPlugins);
+        Assert.Contains(manager.LoadedPlugins, p => p.Name == "RealPlugin");
+        Assert.DoesNotContain(manager.LoadedPlugins, p => p.Name == "FakePlugin");
     }
 }

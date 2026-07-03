@@ -23,7 +23,10 @@ public class PluginManager
                 var assembly = Assembly.LoadFrom(dll);
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (typeof(IPlugin).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
+                    if (typeof(IPlugin).IsAssignableFrom(type) && 
+                        !type.IsAbstract && 
+                        !type.IsInterface &&
+                        type.GetCustomAttribute<PluginLoadAttribute>() != null)
                     {
                         var instance = Activator.CreateInstance(type) as IPlugin;
                         if (instance != null)

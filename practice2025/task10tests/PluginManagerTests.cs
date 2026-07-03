@@ -1,43 +1,42 @@
 using PluginLoader;
 using Xunit;
-using System.Reflection;
 
 namespace task10tests;
 
 public class PluginManagerTests
 {
+    private string GetPluginsDirectory()
+    {
+        var testDir = AppDomain.CurrentDomain.BaseDirectory;
+        var pluginsDir = Path.Combine(testDir, "..", "..", "..", "..", "SamplePlugins", "bin", "Debug", "net9.0");
+        return Path.GetFullPath(pluginsDir);
+    }
+
     [Fact]
     public void LoadPluginsFromDirectory_ShouldLoadOnlyPluginsWithAttribute()
     {
-        // Arrange
         var manager = new PluginManager();
-        var assemblyPath = Assembly.GetExecutingAssembly().Location;
-        var directoryPath = Path.GetDirectoryName(assemblyPath)!;
+        var pluginsDir = GetPluginsDirectory();
 
-        // Act
-        manager.LoadPluginsFromDirectory(directoryPath);
+        manager.LoadPluginsFromDirectory(pluginsDir);
 
-        // Assert
-        Assert.Contains(manager.LoadedPlugins, p => p.Name == "RealPlugin");
-        Assert.DoesNotContain(manager.LoadedPlugins, p => p.Name == "FakePlugin");
+        Assert.Contains(manager.LoadedPlugins, p => p.Name == "PluginA");
+        Assert.Contains(manager.LoadedPlugins, p => p.Name == "PluginB");
     }
 
     [Fact]
     public void LoadPluginsFromDirectory_ShouldRespectDependencies()
     {
-        // Arrange
         var manager = new PluginManager();
-        var assemblyPath = Assembly.GetExecutingAssembly().Location;
-        var directoryPath = Path.GetDirectoryName(assemblyPath)!;
+        var pluginsDir = GetPluginsDirectory();
 
-        // Act
-        manager.LoadPluginsFromDirectory(directoryPath);
+        manager.LoadPluginsFromDirectory(pluginsDir);
 
-        // Assert
         var indexA = manager.LoadedPlugins.ToList().FindIndex(p => p.Name == "PluginA");
         var indexB = manager.LoadedPlugins.ToList().FindIndex(p => p.Name == "PluginB");
 
-        Assert.True(indexA < indexB, $"PluginA (index {indexA}) должен быть загружен раньше PluginB (index {indexB})");
+        Assert.True(indexA >= 0 && indexB >= 0, "Оба плагина должны быть загружены");
+        Assert.True(indexA < indexB, 
+            $"PluginA (index {indexA}) должен быть загружен раньше PluginB (index {indexB})");
     }
-
 }

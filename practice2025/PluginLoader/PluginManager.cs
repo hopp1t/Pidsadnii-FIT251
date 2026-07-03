@@ -14,7 +14,6 @@ public class PluginManager
         _loadedPlugins.Clear();
         if (!Directory.Exists(directoryPath)) return;
 
-        // Шаг 1: Загружаем все DLL и находим классы с [PluginLoad]
         var pluginTypes = new List<Type>();
         var dllFiles = Directory.GetFiles(directoryPath, "*.dll");
 
@@ -40,13 +39,10 @@ public class PluginManager
             }
         }
 
-        // Шаг 2: Строим граф зависимостей
         var graph = BuildDependencyGraph(pluginTypes);
 
-        // Шаг 3: Топологическая сортировка
         var sortedTypes = TopologicalSort(graph);
 
-        // Шаг 4: Создаём экземпляры в правильном порядке
         foreach (var type in sortedTypes)
         {
             var instance = Activator.CreateInstance(type) as IPlugin;

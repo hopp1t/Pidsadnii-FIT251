@@ -20,6 +20,9 @@ public static class CalculatorGenerator
             new[] { typeof(ICalculator) });
 
         GenerateMethod(typeBuilder, nameof(ICalculator.Add), OpCodes.Add);
+        GenerateMethod(typeBuilder, nameof(ICalculator.Minus), OpCodes.Sub);
+        GenerateMethod(typeBuilder, nameof(ICalculator.Mul), OpCodes.Mul);
+        GenerateMethod(typeBuilder, nameof(ICalculator.Div), OpCodes.Div);
 
         var calculatorType = typeBuilder.CreateType();
         return (ICalculator)Activator.CreateInstance(calculatorType)!;

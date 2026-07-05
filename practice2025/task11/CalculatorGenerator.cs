@@ -39,5 +39,8 @@ public static class CalculatorGenerator
         il.Emit(OpCodes.Ldarg_2);
         il.Emit(operation);
         il.Emit(OpCodes.Ret);
+
+        var interfaceMethod = typeof(ICalculator).GetMethod(methodName)!;
+        typeBuilder.DefineMethodOverride(methodBuilder, interfaceMethod);
     }
 }

@@ -40,4 +40,14 @@ public class CalculatorTests
         var calculator = CalculatorGenerator.CreateCalculator();
         Assert.Equal(5, calculator.Div(10, 2));
     }
+    [Fact]
+    public void Calculator_ShouldBeDynamicallyGenerated()
+    {
+        var calculator = CalculatorGenerator.CreateCalculator();
+        var type = calculator.GetType();
+        
+        Assert.Equal("DynamicCalculator", type.Name);
+        Assert.True(type.Assembly.IsDynamic);
+        Assert.True(typeof(ICalculator).IsAssignableFrom(type));
+    }
 }

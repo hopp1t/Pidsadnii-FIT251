@@ -12,4 +12,32 @@ public class CalculatorTests
         Assert.NotNull(calculator);
         Assert.IsAssignableFrom<ICalculator>(calculator);
     }
+
+    [Fact]
+    public void Add_ShouldReturnSum()
+    {
+        var calculator = CalculatorGenerator.CreateCalculator();
+        Assert.Equal(7, calculator.Add(3, 4));
+    }
+
+    [Fact]
+    public void Minus_ShouldReturnDifference()
+    {
+        var calculator = CalculatorGenerator.CreateCalculator();
+        Assert.Equal(1, calculator.Minus(5, 4));
+    }
+
+    [Fact]
+    public void Mul_ShouldReturnProduct()
+    {
+        var calculator = CalculatorGenerator.CreateCalculator();
+        Assert.Equal(12, calculator.Mul(3, 4));
+    }
+
+    [Fact]
+    public void Div_ShouldReturnQuotient()
+    {
+        var calculator = CalculatorGenerator.CreateCalculator();
+        Assert.Equal(5, calculator.Div(10, 2));
+    }
 }

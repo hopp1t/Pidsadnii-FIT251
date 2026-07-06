@@ -1,50 +1,76 @@
 using System.Reflection;
-using System.Reflection.Emit;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
 
 namespace task11;
 
 public static class CalculatorGenerator
 {
-    public static ICalculator CreateCalculator()
+    private const string CalculatorCode = @"
+using System;
+
+public class Calculator : task11.ICalculator
+{
+    public int Add(int a, int b) => a + b;
+    public int Minus(int a, int b) => a - b;
+    public int Mul(int a, int b) => a * b;
+    public int Div(int a, int b) => a / b;
+}";
+
+    private static readonly Lazy<ICalculator> _instance = new(CreateCalculatorInternal);
+
+    public static ICalculator CreateCalculator() => _instance.Value;
+
+    public static ICalculator CreateCalculatorFromCode(string code)
     {
-        var assemblyName = new AssemblyName("DynamicCalculatorAssembly");
-        var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
-            assemblyName, AssemblyBuilderAccess.Run);
-
-        var moduleBuilder = assemblyBuilder.DefineDynamicModule("DynamicCalculatorModule");
-
-        var typeBuilder = moduleBuilder.DefineType(
-            "DynamicCalculator",
-            TypeAttributes.Public | TypeAttributes.Class,
-            null,
-            new[] { typeof(ICalculator) });
-
-        GenerateMethod(typeBuilder, nameof(ICalculator.Add), OpCodes.Add);
-        GenerateMethod(typeBuilder, nameof(ICalculator.Minus), OpCodes.Sub);
-        GenerateMethod(typeBuilder, nameof(ICalculator.Mul), OpCodes.Mul);
-        GenerateMethod(typeBuilder, nameof(ICalculator.Div), OpCodes.Div);
-
-        var calculatorType = typeBuilder.CreateType();
-        return (ICalculator)Activator.CreateInstance(calculatorType)!;
+        return CompileAndCreateInstance(code);
     }
 
-    private static void GenerateMethod(TypeBuilder typeBuilder, string methodName, OpCode operation)
+    private static ICalculator CreateCalculatorInternal()
     {
-        var methodBuilder = typeBuilder.DefineMethod(
-            methodName,
-            MethodAttributes.Public | MethodAttributes.Virtual,
-            CallingConventions.Standard,
-            typeof(int),
-            new[] { typeof(int), typeof(int) });
+        return CompileAndCreateInstance(CalculatorCode);
+    }
 
-        var il = methodBuilder.GetILGenerator();
-        il.Emit(OpCodes.Ldarg_1);
-        il.Emit(OpCodes.Ldarg_2);
-        il.Emit(operation);
-        il.Emit(OpCodes.Ret);
+    private static ICalculator CompileAndCreateInstance(string code)
+    {
+        var syntaxTree = CSharpSyntaxTree.ParseText(code);
 
-        var interfaceMethod = typeof(ICalculator).GetMethod(methodName)!;
-        typeBuilder.DefineMethodOverride(methodBuilder, interfaceMethod);
+        var references = new[]
+        {
+            MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+            MetadataReference.CreateFromFile(typeof(ICalculator).Assembly.Location),
+            MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location),
+        };
+
+        var compilation = CSharpCompilation.Create(
+            "CalculatorAssembly",
+            syntaxTrees: new[] { syntaxTree },
+            references: references,
+            options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+        using var ms = new MemoryStream();
+        EmitResult result = compilation.Emit(ms);
+
+        if (!result.Success)
+        {
+            var errors = result.Diagnostics
+                .Where(d => d.Severity == DiagnosticSeverity.Error)
+                .Select(d => d.GetMessage());
+            
+            throw new InvalidOperationException(
+                $"Ошибка компиляции:\n{string.Join("\n", errors)}");
+        }
+
+        ms.Seek(0, SeekOrigin.Begin);
+        var assembly = Assembly.Load(ms.ToArray());
+
+        var calculatorType = assembly.GetType("Calculator")
+            ?? throw new InvalidOperationException("Класс Calculator не найден в скомпилированной сборке");
+
+        var instance = Activator.CreateInstance(calculatorType) as ICalculator
+            ?? throw new InvalidOperationException("Не удалось создать экземпляр класса Calculator");
+
+        return instance;
     }
 }
-    

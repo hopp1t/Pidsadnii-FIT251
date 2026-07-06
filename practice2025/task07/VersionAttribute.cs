@@ -2,6 +2,10 @@ namespace task07;
 
 using System;
 
+[AttributeUsage(
+    AttributeTargets.Class,
+    Inherited = false,
+    AllowMultiple = false)]
 public class VersionAttribute : Attribute
 {
     public int Major { get; }

@@ -27,6 +27,19 @@ public class StudentServiceTests
     }
 
     [Fact]
+    public void GetStudentsByFaculty_NonExistentFaculty_ReturnsEmpty()
+    {
+        var result = _service.GetStudentsByFaculty("Медицина").ToList();
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void GetStudentsByFaculty_NullFaculty_ThrowsArgumentException()
+    {
+        Assert.ThrowsAny<ArgumentException>(() => _service.GetStudentsByFaculty(null!).ToList());
+    }
+
+    [Fact]
     public void GetStudentsWithMinAverageGrade_ShouldReturnStudentsWithGrade4OrHigher()
     {
         var result = _service.GetStudentsWithMinAverageGrade(4.0).ToList();
@@ -57,5 +70,19 @@ public class StudentServiceTests
     {
         var result = _service.GetFacultyWithHighestAverageGrade();
         Assert.Equal("Экономика", result);
+    }
+
+    [Fact]
+    public void GetFacultyWithHighestAverageGrade_EmptyCollection_ReturnsEmpty()
+    {
+        var emptyService = new StudentService(new List<Student>());
+        var result = emptyService.GetFacultyWithHighestAverageGrade();
+        Assert.Equal(string.Empty, result);
+    }
+
+    [Fact]
+    public void Constructor_NullStudents_ThrowsArgumentNullException()
+    {
+        Assert.Throws<ArgumentNullException>(() => new StudentService(null!));
     }
 }

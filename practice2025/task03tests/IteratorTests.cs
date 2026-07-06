@@ -110,4 +110,32 @@ public class IteratorTests
         Assert.Single(collection);
         Assert.DoesNotContain(2, collection);
     }
+
+    [Fact]
+    public void Add_NullItem_ThrowsArgumentNullException()
+    {
+        var collection = new CustomCollection<string>();
+        Assert.Throws<ArgumentNullException>(() => collection.Add(null!));
+    }
+
+    [Fact]
+    public void Remove_NullItem_ThrowsArgumentNullException()
+    {
+        var collection = new CustomCollection<string>();
+        Assert.Throws<ArgumentNullException>(() => collection.Remove(null!));
+    }
+
+    [Fact]
+    public void FilterAndSort_NullPredicate_ThrowsArgumentNullException()
+    {
+        var collection = new CustomCollection<int>();
+        Assert.Throws<ArgumentNullException>(() => collection.FilterAndSort(null!, x => x).ToList());
+    }
+
+    [Fact]
+    public void FilterAndSort_NullKeySelector_ThrowsArgumentNullException()
+    {
+        var collection = new CustomCollection<int>();
+        Assert.Throws<ArgumentNullException>(() => collection.FilterAndSort(x => true, null!).ToList());
+    }
 }

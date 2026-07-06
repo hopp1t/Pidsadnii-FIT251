@@ -6,9 +6,17 @@ public class CustomCollection<T> : IEnumerable<T>
 {
     private readonly List<T> _items = new();
 
-    public void Add(T item) => _items.Add(item);
+    public void Add(T item)
+    {
+        ArgumentNullException.ThrowIfNull(item);
+        _items.Add(item);
+    }
 
-    public bool Remove(T item) => _items.Remove(item);
+    public bool Remove(T item)
+    {
+        ArgumentNullException.ThrowIfNull(item);
+        return _items.Remove(item);
+    }
 
     public int Count => _items.Count;
 

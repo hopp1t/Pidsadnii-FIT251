@@ -47,3 +47,4 @@ public static class CalculatorGenerator
         typeBuilder.DefineMethodOverride(methodBuilder, interfaceMethod);
     }
 }
+    

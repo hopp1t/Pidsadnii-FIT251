@@ -78,12 +78,13 @@ public class ValidationTests
             BirthDate = new DateTime(2000, 5, 15),
             Grades = new List<Subject>
             {
-                new Subject { Name = "Математика", Grade = 10 } // оценка вне диапазона
+                new Subject { Name = "Математика", Grade = 10 }
             }
         };
 
         var ex = Assert.Throws<InvalidOperationException>(() => StudentValidator.Validate(student));
-        Assert.Contains("Grade", ex.Message);
+        Assert.Contains("Математика", ex.Message);
+        Assert.Contains("2-5", ex.Message);
     }
 
     [Fact]

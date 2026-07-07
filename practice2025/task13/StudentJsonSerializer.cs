@@ -22,8 +22,11 @@ public static class StudentJsonSerializer
     public static Student Deserialize(string json)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(json);
-        return JsonSerializer.Deserialize<Student>(json, Options)
+        var student = JsonSerializer.Deserialize<Student>(json, Options)
             ?? throw new JsonException("Десериализация вернула null");
+        
+        StudentValidator.Validate(student);
+        return student;
     }
 
     public static void SaveToFile(Student student, string filePath)

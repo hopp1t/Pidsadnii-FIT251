@@ -104,4 +104,36 @@ public class ValidationTests
         var ex = Assert.Throws<InvalidOperationException>(() => StudentValidator.Validate(student));
         Assert.Contains("Name", ex.Message);
     }
+
+    [Fact]
+public void Deserialize_InvalidStudent_ShouldThrowInvalidOperationException()
+{
+    var json = """
+    {
+        "FirstName": "",
+        "LastName": "Петров",
+        "BirthDate": "2000-05-15T00:00:00",
+        "Grades": []
+    }
+    """;
+
+    Assert.Throws<InvalidOperationException>(() => StudentJsonSerializer.Deserialize(json));
+}
+
+    [Fact]
+    public void Deserialize_WithInvalidGrade_ShouldThrowInvalidOperationException()
+    {
+        var json = """
+        {
+            "FirstName": "Иван",
+            "LastName": "Петров",
+            "BirthDate": "2000-05-15T00:00:00",
+            "Grades": [
+                {"Name": "Математика", "Grade": 10}
+            ]
+        }
+        """;
+
+        Assert.Throws<InvalidOperationException>(() => StudentJsonSerializer.Deserialize(json));
+    }
 }

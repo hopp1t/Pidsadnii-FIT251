@@ -25,4 +25,24 @@ public static class StudentJsonSerializer
         return JsonSerializer.Deserialize<Student>(json, Options)
             ?? throw new JsonException("Десериализация вернула null");
     }
+
+    public static void SaveToFile(Student student, string filePath)
+    {
+        ArgumentNullException.ThrowIfNull(student);
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+        
+        var json = Serialize(student);
+        File.WriteAllText(filePath, json);
+    }
+
+    public static Student LoadFromFile(string filePath)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+        
+        if (!File.Exists(filePath))
+            throw new FileNotFoundException($"Файл не найден: {filePath}", filePath);
+        
+        var json = File.ReadAllText(filePath);
+        return Deserialize(json);
+    }
 }

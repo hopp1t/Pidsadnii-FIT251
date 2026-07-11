@@ -1,11 +1,9 @@
 using System.Threading;
 
-namespace task14;
+namespace task13;
 
 public static class DefiniteIntegral
 {
-    private static readonly object _lock = new();
-
     public static double Solve(double a, double b, Func<double, double> function, double step, int threadsNumber)
     {
         ArgumentNullException.ThrowIfNull(function);
@@ -14,25 +12,21 @@ public static class DefiniteIntegral
         if (threadsNumber <= 0)
             throw new ArgumentOutOfRangeException(nameof(threadsNumber), "Число потоков должно быть положительным");
 
-        double totalResult = 0.0;
+        // Оптимизация: локальные результаты без lock
+        var localResults = new double[threadsNumber];
         var barrier = new Barrier(threadsNumber + 1);
         double segmentWidth = (b - a) / threadsNumber;
         var threads = new Thread[threadsNumber];
 
         for (int i = 0; i < threadsNumber; i++)
         {
+            int threadIndex = i;
             double segmentA = a + i * segmentWidth;
             double segmentB = a + (i + 1) * segmentWidth;
 
             threads[i] = new Thread(() =>
             {
-                double localResult = ComputeTrapezoidal(segmentA, segmentB, function, step);
-                
-                lock (_lock)
-                {
-                    totalResult += localResult;
-                }
-                
+                localResults[threadIndex] = ComputeTrapezoidal(segmentA, segmentB, function, step);
                 barrier.SignalAndWait();
             });
 
@@ -44,6 +38,12 @@ public static class DefiniteIntegral
         foreach (var thread in threads)
         {
             thread.Join();
+        }
+
+        double totalResult = 0.0;
+        for (int i = 0; i < threadsNumber; i++)
+        {
+            totalResult += localResults[i];
         }
 
         return totalResult;

@@ -113,3 +113,29 @@ else
 {
     Console.WriteLine("⚠ Optimization required");
 }
+
+//Финальные замеры после оптимизации
+Console.WriteLine();
+Console.WriteLine("=== Item 6: Measurements after optimization ===");
+
+var swSingleFinal = Stopwatch.StartNew();
+for (int i = 0; i < iterations; i++)
+{
+    SingleThreadIntegral.Solve(-100, 100, sin, optimalStep);
+}
+swSingleFinal.Stop();
+double singleThreadTimeFinal = swSingleFinal.ElapsedMilliseconds / (double)iterations;
+
+var swMultiFinal = Stopwatch.StartNew();
+for (int i = 0; i < iterations; i++)
+{
+    DefiniteIntegral.Solve(-100, 100, sin, optimalStep, bestThreadCount.threads);
+}
+swMultiFinal.Stop();
+double multiThreadTimeFinal = swMultiFinal.ElapsedMilliseconds / (double)iterations;
+
+double speedupFinal = (singleThreadTimeFinal - multiThreadTimeFinal) / singleThreadTimeFinal * 100;
+
+Console.WriteLine($"Single-thread time: {singleThreadTimeFinal:F2} ms");
+Console.WriteLine($"Multi-thread time: {multiThreadTimeFinal:F2} ms");
+Console.WriteLine($"Speedup: {speedupFinal:F2}%");

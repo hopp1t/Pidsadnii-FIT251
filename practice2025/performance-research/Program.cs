@@ -59,3 +59,23 @@ foreach (var threads in threadCounts)
 
 var bestThreadCount = threadTimes.OrderBy(t => t.time).First();
 Console.WriteLine($"\nOptimal thread count: {bestThreadCount.threads} (time: {bestThreadCount.time:F2} ms)");
+
+// Построение графика
+Console.WriteLine();
+Console.WriteLine("=== Building graph ===");
+try
+{
+    var plt = new ScottPlot.Plot();
+    var xs = threadTimes.Select(t => (double)t.threads).ToArray();
+    var ys = threadTimes.Select(t => t.time).ToArray();
+    plt.Add.Scatter(xs, ys);
+    plt.Title("Execution time vs Thread count");
+    plt.XLabel("Thread count");
+    plt.YLabel("Execution time, ms");
+    plt.SavePng("performance_graph.png", 800, 600);
+    Console.WriteLine("Graph saved to performance_graph.png");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Error building graph: {ex.Message}");
+}

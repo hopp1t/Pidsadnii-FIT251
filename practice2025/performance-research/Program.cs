@@ -139,3 +139,39 @@ double speedupFinal = (singleThreadTimeFinal - multiThreadTimeFinal) / singleThr
 Console.WriteLine($"Single-thread time: {singleThreadTimeFinal:F2} ms");
 Console.WriteLine($"Multi-thread time: {multiThreadTimeFinal:F2} ms");
 Console.WriteLine($"Speedup: {speedupFinal:F2}%");
+
+//Запись результатов
+Console.WriteLine();
+Console.WriteLine("=== Item 7: Saving results to file ===");
+var results = new List<string>
+{
+    "=== Performance Research Results ===",
+    $"Function: sin(x)",
+    $"Interval: [-100, 100]",
+    $"Iterations for averaging: {iterations}",
+    "",
+    $"=== Item 3: Optimal step ===",
+    $"Optimal step size: {optimalStep:E2}",
+    $"Provides accuracy: {requiredAccuracy:E2}",
+    "",
+    $"=== Item 4: Optimal thread count ===",
+    $"Optimal thread count: {bestThreadCount.threads}",
+    $"Execution time: {bestThreadCount.time:F2} ms",
+    "",
+    $"Measurements for different thread counts:",
+};
+
+foreach (var (threads, time) in threadTimes)
+{
+    results.Add($"  Threads: {threads,2}, time: {time:F2} ms");
+}
+
+results.Add("");
+results.Add($"=== Item 5: Comparison with single-thread ===");
+results.Add($"Single-thread time: {singleThreadTimeFinal:F2} ms");
+results.Add($"Multi-thread time: {multiThreadTimeFinal:F2} ms");
+results.Add($"Difference in percent: {speedupFinal:F2}%");
+results.Add($"Speedup factor: {(singleThreadTimeFinal / multiThreadTimeFinal):F2}x");
+
+File.WriteAllLines("results.txt", results);
+Console.WriteLine("Results saved to results.txt");

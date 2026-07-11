@@ -37,3 +37,25 @@ foreach (var step in steps)
 
 if (optimalStep == 0) optimalStep = 1e-4;
 Console.WriteLine($"\nOptimal step: {optimalStep:E2}");
+
+//Определение оптимального числа потоков
+Console.WriteLine();
+Console.WriteLine("=== Item 4: Optimal thread count ===");
+int[] threadCounts = { 1, 2, 4, 8, 16, 32 };
+var threadTimes = new List<(int threads, double time)>();
+
+foreach (var threads in threadCounts)
+{
+    var sw = Stopwatch.StartNew();
+    for (int i = 0; i < iterations; i++)
+    {
+        DefiniteIntegral.Solve(-100, 100, sin, optimalStep, threads);
+    }
+    sw.Stop();
+    double avgTime = sw.ElapsedMilliseconds / (double)iterations;
+    threadTimes.Add((threads, avgTime));
+    Console.WriteLine($"Threads: {threads,2}, time: {avgTime:F2} ms");
+}
+
+var bestThreadCount = threadTimes.OrderBy(t => t.time).First();
+Console.WriteLine($"\nOptimal thread count: {bestThreadCount.threads} (time: {bestThreadCount.time:F2} ms)");

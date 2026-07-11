@@ -79,3 +79,37 @@ catch (Exception ex)
 {
     Console.WriteLine($"Error building graph: {ex.Message}");
 }
+
+//Сравнение с однопоточной версией
+Console.WriteLine();
+Console.WriteLine("=== Item 5: Comparison with single-thread version ===");
+var swSingle = Stopwatch.StartNew();
+for (int i = 0; i < iterations; i++)
+{
+    SingleThreadIntegral.Solve(-100, 100, sin, optimalStep);
+}
+swSingle.Stop();
+double singleThreadTime = swSingle.ElapsedMilliseconds / (double)iterations;
+
+var swMulti = Stopwatch.StartNew();
+for (int i = 0; i < iterations; i++)
+{
+    DefiniteIntegral.Solve(-100, 100, sin, optimalStep, bestThreadCount.threads);
+}
+swMulti.Stop();
+double multiThreadTime = swMulti.ElapsedMilliseconds / (double)iterations;
+
+double speedup = (singleThreadTime - multiThreadTime) / singleThreadTime * 100;
+
+Console.WriteLine($"Single-thread time: {singleThreadTime:F2} ms");
+Console.WriteLine($"Multi-thread time ({bestThreadCount.threads} threads): {multiThreadTime:F2} ms");
+Console.WriteLine($"Speedup: {speedup:F2}%");
+
+if (speedup >= 15)
+{
+    Console.WriteLine("✓ Multi-thread version is >= 15% faster");
+}
+else
+{
+    Console.WriteLine("⚠ Optimization required");
+}

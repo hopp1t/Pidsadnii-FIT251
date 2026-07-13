@@ -152,7 +152,7 @@ try
     plt.XLabel("Количество потоков");
     plt.YLabel("Время выполнения, мс");
     
-    plt.Grid.Enable();
+    plt.Grid.IsVisible = true;
     
     plt.SavePng("performance_graph.png", 800, 600);
     Console.WriteLine("✓ Сохранено: performance_graph.png");

@@ -1,7 +1,7 @@
-using task13;
+using task14;
 using Xunit;
 
-namespace task13tests;
+namespace task14tests;
 
 public class IntegralComparisonTests
 {

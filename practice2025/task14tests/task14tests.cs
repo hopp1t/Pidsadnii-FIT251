@@ -28,7 +28,7 @@ public class DefiniteIntegralTests
     public void IntegralOfX_ShouldReturn10()
     {
         var result = DefiniteIntegral.Solve(0, 5, X, 1e-6, 8);
-        Assert.Equal(10, result, 5);
+        Assert.Equal(12.5, result, 5);
     }
 
     [Fact]

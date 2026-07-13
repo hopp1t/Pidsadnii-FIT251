@@ -1,4 +1,4 @@
-namespace task13;
+namespace task14;
 
 /// Однопоточная реализация вычисления определённого интеграла методом трапеций.
 public static class SingleThreadIntegral

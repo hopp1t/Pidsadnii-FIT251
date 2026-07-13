@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using task14; 
+using task15;
 
 Console.WriteLine("=== Исследование производительности вычисления интеграла ===");
 Console.WriteLine("Функция: sin(x), отрезок: [-100, 100]");

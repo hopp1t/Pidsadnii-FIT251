@@ -11,15 +11,22 @@ public class ServerThreadTests
         public void Execute() => Executed = true;
     }
 
+    private class ActionCommand : ICommand
+    {
+        private readonly Action _action;
+        public ActionCommand(Action action) => _action = action;
+        public void Execute() => _action();
+    }
+
     [Fact]
     public void ServerThread_ShouldExecuteEnqueuedCommand()
     {
         var serverThread = new ServerThread();
         var cmd = new TestCommand();
 
+        serverThread.Start();  
         serverThread.Enqueue(cmd);
         serverThread.EnqueueSoftStop();
-        serverThread.Start();
         serverThread.Join();
 
         Assert.True(cmd.Executed);
@@ -32,6 +39,8 @@ public class ServerThreadTests
         var executionOrder = new List<int>();
         var lockObj = new object();
 
+        serverThread.Start(); 
+
         for (int i = 0; i < 5; i++)
         {
             var index = i;
@@ -42,7 +51,6 @@ public class ServerThreadTests
         }
 
         serverThread.EnqueueSoftStop();
-        serverThread.Start();
         serverThread.Join();
 
         Assert.Equal(new[] { 0, 1, 2, 3, 4 }, executionOrder);
@@ -55,11 +63,11 @@ public class ServerThreadTests
         var cmd1 = new TestCommand();
         var cmd2 = new TestCommand();
 
+        serverThread.Start(); 
         serverThread.Enqueue(cmd1);
         serverThread.EnqueueHardStop();
         serverThread.Enqueue(cmd2);
 
-        serverThread.Start();
         serverThread.Join();
 
         Assert.True(cmd1.Executed);
@@ -73,21 +81,14 @@ public class ServerThreadTests
         var cmd1 = new TestCommand();
         var cmd2 = new TestCommand();
 
+        serverThread.Start();  
         serverThread.Enqueue(cmd1);
         serverThread.EnqueueSoftStop();
         serverThread.Enqueue(cmd2);
 
-        serverThread.Start();
         serverThread.Join();
 
         Assert.True(cmd1.Executed);
         Assert.True(cmd2.Executed);
-    }
-
-    private class ActionCommand : ICommand
-    {
-        private readonly Action _action;
-        public ActionCommand(Action action) => _action = action;
-        public void Execute() => _action();
     }
 }

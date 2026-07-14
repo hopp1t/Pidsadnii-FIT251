@@ -27,11 +27,12 @@ public class WrongThreadStopTests
         var cmd2 = new TestCommand();
         var wrongHardStop = new HardStop(999);
 
+        serverThread.Start(); 
         serverThread.Enqueue(cmd1);
         serverThread.Enqueue(wrongHardStop);
         serverThread.Enqueue(cmd2);
+        serverThread.EnqueueSoftStop();
 
-        serverThread.Start();
         serverThread.Join();
 
         Assert.True(cmd1.Executed);
@@ -50,11 +51,12 @@ public class WrongThreadStopTests
         var cmd2 = new TestCommand();
         var wrongSoftStop = new SoftStop(999);
 
+        serverThread.Start(); 
         serverThread.Enqueue(cmd1);
         serverThread.Enqueue(wrongSoftStop);
         serverThread.Enqueue(cmd2);
+        serverThread.EnqueueSoftStop();
 
-        serverThread.Start();
         serverThread.Join();
 
         Assert.True(cmd1.Executed);

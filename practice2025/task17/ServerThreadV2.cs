@@ -21,6 +21,8 @@ public class ServerThreadV2
         _exceptionHandler = exceptionHandler ?? new DefaultExceptionHandler();
     }
 
+    public bool IsAlive => _thread?.IsAlive == true;
+
     public void Start()
     {
         if (_thread != null && _thread.IsAlive)
@@ -51,6 +53,11 @@ public class ServerThreadV2
     public void Join()
     {
         _thread?.Join();
+    }
+
+    public bool Join(int millisecondsTimeout)
+    {
+        return _thread?.Join(millisecondsTimeout) ?? true;
     }
 
     private void ThreadProc()

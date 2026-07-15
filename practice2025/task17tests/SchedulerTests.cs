@@ -1,8 +1,9 @@
 using task17;
 using Xunit;
+using System.Collections.Concurrent; 
+using System.Threading;              
 
 namespace task17tests;
-
 public class SchedulerTests
 {
     private class TestCommand : ICommand

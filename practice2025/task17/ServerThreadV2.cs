@@ -12,6 +12,7 @@ public class ServerThreadV2
     private int _threadId;
     private bool _isSoftStopping;
     private readonly ManualResetEventSlim _startedEvent = new();
+    private readonly object _schedulerLock = new();
 
     public ServerThreadV2(
         IScheduler? scheduler = null,
@@ -69,15 +70,26 @@ public class ServerThreadV2
         {
             ICommand? commandToExecute = null;
 
-            if (_scheduler.HasCommand())
+            if (_commandQueue.TryTake(out commandToExecute!))
             {
-                try
+                
+            }
+            else if (_scheduler.HasCommand())
+            {
+                lock (_schedulerLock)
                 {
-                    commandToExecute = _scheduler.Select();
-                }
-                catch (Exception ex)
-                {
-                    _exceptionHandler.Handle(null!, ex);
+                    if (_scheduler.HasCommand())
+                    {
+                        try
+                        {
+                            commandToExecute = _scheduler.Select();
+                        }
+                        catch (Exception ex)
+                        {
+                            _exceptionHandler.Handle(null!, ex);
+                            continue;
+                        }
+                    }
                 }
             }
 
@@ -85,19 +97,7 @@ public class ServerThreadV2
             {
                 try
                 {
-                    if (_isSoftStopping)
-                    {
-                        if (!_commandQueue.TryTake(out commandToExecute!, 50))
-                        {
-                            if (!_scheduler.HasCommand() && _commandQueue.Count == 0)
-                                break;
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        commandToExecute = _commandQueue.Take();
-                    }
+                    commandToExecute = _commandQueue.Take();
                 }
                 catch (InvalidOperationException)
                 {
@@ -111,9 +111,9 @@ public class ServerThreadV2
             {
                 commandToExecute.Execute();
 
-                if (commandToExecute is HardStop hardStop)
+                if (commandToExecute is HardStop)
                 {
-                    if (hardStop is { } && Thread.CurrentThread.ManagedThreadId == _threadId)
+                    if (Thread.CurrentThread.ManagedThreadId == _threadId)
                     {
                         _commandQueue.CompleteAdding();
                         break;
@@ -124,9 +124,9 @@ public class ServerThreadV2
                     }
                 }
 
-                if (commandToExecute is SoftStop softStop)
+                if (commandToExecute is SoftStop)
                 {
-                    if (softStop is { } && Thread.CurrentThread.ManagedThreadId == _threadId)
+                    if (Thread.CurrentThread.ManagedThreadId == _threadId)
                     {
                         _isSoftStopping = true;
                     }
@@ -138,7 +138,10 @@ public class ServerThreadV2
 
                 if (commandToExecute is LongRunningCommand longCmd && !longCmd.IsCompleted)
                 {
-                    _scheduler.Add(longCmd);
+                    lock (_schedulerLock)
+                    {
+                        _scheduler.Add(longCmd);
+                    }
                 }
 
                 if (_isSoftStopping && !_scheduler.HasCommand() && _commandQueue.Count == 0)
@@ -149,7 +152,6 @@ public class ServerThreadV2
             catch (Exception ex)
             {
                 _exceptionHandler.Handle(commandToExecute, ex);
-
             }
         }
     }

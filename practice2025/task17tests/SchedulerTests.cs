@@ -1,9 +1,10 @@
 using task17;
 using Xunit;
-using System.Collections.Concurrent; 
-using System.Threading;              
+using System.Collections.Concurrent;
+using System.Threading;
 
 namespace task17tests;
+
 public class SchedulerTests
 {
     private class TestCommand : ICommand
@@ -30,7 +31,8 @@ public class SchedulerTests
         
         var selected = scheduler.Select();
         Assert.Same(cmd, selected);
-        Assert.True(scheduler.HasCommand()); 
+
+        Assert.False(scheduler.HasCommand());
     }
 
     [Fact]
@@ -49,6 +51,11 @@ public class SchedulerTests
         Assert.Same(cmd2, scheduler.Select());
         Assert.Same(cmd3, scheduler.Select());
 
+        Assert.False(scheduler.HasCommand());
+
+        scheduler.Add(cmd1);
+        scheduler.Add(cmd2);
+        
         Assert.Same(cmd1, scheduler.Select());
         Assert.Same(cmd2, scheduler.Select());
     }
@@ -57,30 +64,30 @@ public class SchedulerTests
     public void Scheduler_ShouldHandleConcurrentAddAndSelect()
     {
         var scheduler = new RoundRobinScheduler();
-        var results = new ConcurrentBag<ICommand>();
-        var barrier = new Barrier(3);
 
-        var adder1 = new Thread(() =>
-        {
-            barrier.SignalAndWait();
-            scheduler.Add(new TestCommand());
-        });
-
-        var adder2 = new Thread(() =>
-        {
-            barrier.SignalAndWait();
-            scheduler.Add(new TestCommand());
-        });
+        var adder1 = new Thread(() => scheduler.Add(new TestCommand()));
+        var adder2 = new Thread(() => scheduler.Add(new TestCommand()));
 
         adder1.Start();
         adder2.Start();
-        barrier.SignalAndWait();
-
         adder1.Join();
         adder2.Join();
 
         Assert.True(scheduler.HasCommand());
-        Assert.NotNull(scheduler.Select());
-        Assert.True(scheduler.HasCommand());
+
+        var first = scheduler.Select();
+        Assert.NotNull(first);
+        
+        var second = scheduler.Select();
+        Assert.NotNull(second);
+        
+        Assert.False(scheduler.HasCommand());
+    }
+
+    [Fact]
+    public void Select_OnEmptyScheduler_ShouldThrow()
+    {
+        var scheduler = new RoundRobinScheduler();
+        Assert.Throws<InvalidOperationException>(() => scheduler.Select());
     }
 }

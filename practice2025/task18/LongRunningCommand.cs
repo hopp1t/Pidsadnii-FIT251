@@ -1,4 +1,4 @@
-namespace task17;
+namespace task18;
 
 public abstract class LongRunningCommand : ICommand
 {

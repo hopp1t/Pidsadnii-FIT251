@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace task17;
+namespace task18;
 
 public class ServerThread
 {

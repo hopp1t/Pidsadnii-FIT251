@@ -1,12 +1,12 @@
 using System.Threading;
 
-namespace task17;
+namespace task18;
 
-public class HardStop : ICommand
+public class SoftStop : ICommand
 {
     private readonly int _targetThreadId;
 
-    public HardStop(int targetThreadId)
+    public SoftStop(int targetThreadId)
     {
         _targetThreadId = targetThreadId;
     }
@@ -16,7 +16,7 @@ public class HardStop : ICommand
         if (Thread.CurrentThread.ManagedThreadId != _targetThreadId)
         {
             throw new InvalidOperationException(
-                $"HardStop can only be successfully executed in its target thread (id {_targetThreadId}).");
+                $"SoftStop can only be successfully executed in its target thread (id {_targetThreadId}).");
         }
     }
 }

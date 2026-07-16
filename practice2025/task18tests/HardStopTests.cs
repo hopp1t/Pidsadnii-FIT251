@@ -1,7 +1,7 @@
-using task17;
+using task18;
 using Xunit;
 
-namespace task17tests;
+namespace task18tests;
 
 public class HardStopTests
 {

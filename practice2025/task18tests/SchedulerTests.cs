@@ -1,9 +1,9 @@
-using task17;
+using task18;
 using Xunit;
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace task17tests;
+namespace task18tests;
 
 public class SchedulerTests
 {

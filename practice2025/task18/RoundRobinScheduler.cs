@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace task17;
+namespace task18;
 
 public class RoundRobinScheduler : IScheduler
 {

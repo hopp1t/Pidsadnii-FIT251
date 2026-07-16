@@ -87,7 +87,7 @@ public class Task18Tests
         server.Enqueue(normalCmd);
         server.EnqueueSoftStop();
         server.Join();
-
+    
         Assert.Single(handler.Handled);
         Assert.Same(throwingCmd, handler.Handled[0].Command);
         
